@@ -5,10 +5,10 @@ import {
   Get,
   Param,
   Patch,
-  Post,
-} from '@nestjs/common';
-import { CartService } from './cart.service';
-import { Cart } from './schemas/cart.schema';
+  Post
+} from '@nestjs/common'
+import { CartService } from './cart.service'
+import { Cart } from './schemas/cart.schema'
 
 @Controller('cart')
 export class CartController {
@@ -16,26 +16,26 @@ export class CartController {
 
   @Get()
   async findAll() {
-    return this.cartService.findAll();
+    return this.cartService.findAll()
   }
 
   @Post()
   async create(@Body() cart: Cart) {
-    return this.cartService.create(cart);
+    return this.cartService.create(cart)
   }
 
   @Get(':id')
   async findById(@Param('id') id: string) {
-    return this.cartService.findById(id);
+    return this.cartService.findById(id)
   }
 
   @Patch(':id')
   async update(@Param('id') id: string, @Body() cart: Cart) {
-    return this.cartService.update(id, cart);
+    return this.cartService.update(id, cart)
   }
 
   @Delete(':id')
   async delete(@Param('id') id: string) {
-    return this.cartService.delete(id);
+    return this.cartService.delete(id)
   }
 }
