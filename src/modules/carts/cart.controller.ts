@@ -5,7 +5,8 @@ import {
   Get,
   Param,
   Patch,
-  Post
+  Post,
+  Query
 } from '@nestjs/common'
 import { CartService } from './cart.service'
 import { Cart } from './schemas/cart.schema'
@@ -15,8 +16,8 @@ export class CartController {
   constructor(private readonly cartService: CartService) {}
 
   @Get()
-  async findAll() {
-    return this.cartService.findAll()
+  async findAll(@Query('userEmail') userEmail?: string) {
+    return this.cartService.findAll(userEmail)
   }
 
   @Post()
