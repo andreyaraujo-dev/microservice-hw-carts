@@ -17,6 +17,12 @@ export class Cart {
   @Prop({ type: String })
   imageUrl: string
 
+  @Prop({ required: false, type: Number })
+  year: number
+
+  @Prop({ required: true, type: String })
+  userEmail: string
+
   @Prop({ type: Date, default: Date.now })
   createdAt: Date
 

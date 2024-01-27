@@ -16,13 +16,12 @@ export class CartCustomRepository {
     return cartCreated.save()
   }
 
-  async findById(id: string): Promise<Cart> {
-    const cart = await this.cartModel.findById(id).exec()
-    return cart
+  async findById(id: string): Promise<Cart | null> {
+    return this.cartModel.findById(id).exec()
   }
 
   async update(id: string, cart: Cart): Promise<Cart> {
-    return this.cartModel.findByIdAndUpdate(id, cart).exec()
+    return this.cartModel.findByIdAndUpdate(id, cart, { new: true }).exec()
   }
 
   async delete(id: string): Promise<any> {

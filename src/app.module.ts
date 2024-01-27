@@ -7,7 +7,7 @@ import { CartModule } from './modules/carts/cart.module'
 @Module({
   imports: [
     MongooseModule.forRoot(
-      'mongodb+srv://andreyaraujodev:m9gVpyT9c7r2EX9I@hw-carts.bssub8z.mongodb.net/'
+      'mongodb+srv://hw_carts:XiXpRZaZdk47ybf5rzKu@hw-carts.bssub8z.mongodb.net/hw_carts?retryWrites=true&w=majority'
     ),
     CartModule
   ],

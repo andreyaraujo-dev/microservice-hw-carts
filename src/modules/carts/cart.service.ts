@@ -1,12 +1,10 @@
-import { Inject, Injectable, NotFoundException } from '@nestjs/common'
+import { Injectable, NotFoundException } from '@nestjs/common'
 import { Cart } from './schemas/cart.schema'
 import { CartCustomRepository } from './cart.repository'
 
 @Injectable()
 export class CartService {
-  constructor(
-    @Inject() private readonly cartCustomRepository: CartCustomRepository
-  ) {}
+  constructor(private readonly cartCustomRepository: CartCustomRepository) {}
 
   async findAll(): Promise<Cart[]> {
     return this.cartCustomRepository.findAll()
@@ -19,7 +17,7 @@ export class CartService {
   async findById(id: string): Promise<Cart> {
     const cart = await this.cartCustomRepository.findById(id)
     if (!cart) {
-      throw new NotFoundException('Cart not found')
+      throw new NotFoundException('Registro não encontrado, tente novamente.')
     }
     return cart
   }
@@ -27,7 +25,7 @@ export class CartService {
   async update(id: string, cart: Cart): Promise<Cart> {
     const cartAlreadyExists = await this.cartCustomRepository.findById(id)
     if (!cartAlreadyExists) {
-      throw new NotFoundException('Cart not found')
+      throw new NotFoundException('Registro não encontrado, tente novamente.')
     }
     return this.cartCustomRepository.update(id, cart)
   }
@@ -35,7 +33,7 @@ export class CartService {
   async delete(id: string): Promise<any> {
     const cart = await this.cartCustomRepository.findById(id)
     if (!cart) {
-      throw new NotFoundException('Cart not found')
+      throw new NotFoundException('Registro não encontrado, tente novamente.')
     }
     return this.cartCustomRepository.delete(id)
   }
