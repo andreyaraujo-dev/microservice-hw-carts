@@ -23,6 +23,9 @@ export class Cart {
   @Prop({ required: true, type: String })
   userEmail: string
 
+  @Prop({ required: false, type: Boolean, default: false })
+  isFavorite: boolean
+
   @Prop({ type: Date, default: Date.now })
   createdAt: Date
 
