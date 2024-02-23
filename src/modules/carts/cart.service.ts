@@ -6,8 +6,8 @@ import { CartCustomRepository } from './cart.repository'
 export class CartService {
   constructor(private readonly cartCustomRepository: CartCustomRepository) {}
 
-  async findAll(userEmail?: string): Promise<Cart[]> {
-    return this.cartCustomRepository.findAll(userEmail)
+  async findAll(userEmail?: string, model?: string): Promise<Cart[]> {
+    return this.cartCustomRepository.findAll(userEmail, model)
   }
 
   async create(cart: Cart): Promise<Cart> {

@@ -7,9 +7,10 @@ import { InjectModel } from '@nestjs/mongoose'
 export class CartCustomRepository {
   constructor(@InjectModel(Cart.name) private cartModel: Model<Cart>) {}
 
-  async findAll(userEmail?: string): Promise<Cart[]> {
+  async findAll(userEmail?: string, model?: string): Promise<Cart[]> {
     const query = this.cartModel.find()
     if (userEmail) query.where('userEmail', userEmail)
+    if (model) query.where('model', model)
     return query.exec()
   }
 

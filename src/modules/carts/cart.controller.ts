@@ -16,8 +16,11 @@ export class CartController {
   constructor(private readonly cartService: CartService) {}
 
   @Get()
-  async findAll(@Query('userEmail') userEmail?: string) {
-    return this.cartService.findAll(userEmail)
+  async findAll(
+    @Query('userEmail') userEmail?: string,
+    @Query('model') model?: string
+  ) {
+    return this.cartService.findAll(userEmail, model)
   }
 
   @Post()
