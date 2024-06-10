@@ -42,4 +42,9 @@ export class CartController {
   async delete(@Param('id') id: string) {
     return this.cartService.delete(id)
   }
+
+  @Post('/delete-many')
+  async deleteMany(@Body('ids') ids: string[]) {
+    return this.cartService.deleteMany(ids)
+  }
 }

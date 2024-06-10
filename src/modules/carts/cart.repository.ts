@@ -30,4 +30,8 @@ export class CartCustomRepository {
   async delete(id: string): Promise<any> {
     return this.cartModel.findByIdAndDelete(id).exec()
   }
+
+  async deleteMany(ids: string[]): Promise<any> {
+    return this.cartModel.deleteMany({ _id: ids }).exec()
+  }
 }

@@ -8,6 +8,9 @@ export class Cart {
   @Prop({ required: true, type: String })
   model: string
 
+  @Prop({ type: String })
+  comments: string
+
   @Prop({ type: Date })
   purchaseDate: Date
 

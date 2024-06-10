@@ -37,4 +37,8 @@ export class CartService {
     }
     return this.cartCustomRepository.delete(id)
   }
+
+  async deleteMany(ids: string[]): Promise<any> {
+    return this.cartCustomRepository.deleteMany(ids)
+  }
 }
