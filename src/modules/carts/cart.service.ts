@@ -1,17 +1,40 @@
-import { Injectable, NotFoundException } from '@nestjs/common'
+import {
+  BadRequestException,
+  Injectable,
+  NotFoundException
+} from '@nestjs/common'
 import { Cart } from './schemas/cart.schema'
 import { CartCustomRepository } from './cart.repository'
+import { CreateCart } from './interfaces/create-cart.interface'
+import { AwsS3Service } from '../shared/services/aws/aws-s3.service'
 
 @Injectable()
 export class CartService {
-  constructor(private readonly cartCustomRepository: CartCustomRepository) {}
+  constructor(
+    private readonly cartCustomRepository: CartCustomRepository,
+    private readonly awsS3Service: AwsS3Service
+  ) {}
 
   async findAll(userEmail?: string, model?: string): Promise<Cart[]> {
     return this.cartCustomRepository.findAll(userEmail, model)
   }
 
-  async create(cart: Cart): Promise<Cart> {
-    return this.cartCustomRepository.create(cart)
+  async create(cart: CreateCart): Promise<Cart> {
+    const dataForSave: Cart = {
+      ...cart,
+      imageUrl: ''
+    }
+
+    try {
+      if (cart.image) {
+        const response = await this.awsS3Service.uploadFile(cart.image)
+        dataForSave.imageUrl = response.Location
+      }
+
+      return this.cartCustomRepository.create(dataForSave)
+    } catch (error) {
+      throw new BadRequestException(error)
+    }
   }
 
   async findById(id: string): Promise<Cart> {

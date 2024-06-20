@@ -9,31 +9,31 @@ export class Cart {
   model: string
 
   @Prop({ type: String })
-  comments: string
+  comments?: string
 
   @Prop({ type: Date })
-  purchaseDate: Date
+  purchaseDate?: Date
 
   @Prop({ required: true, type: Number })
-  value: number
+  value?: number
 
   @Prop({ type: String })
-  imageUrl: string
+  imageUrl?: string
 
   @Prop({ required: false, type: Number })
-  year: number
+  year?: number
 
   @Prop({ required: true, type: String })
   userEmail: string
 
   @Prop({ required: false, type: Boolean, default: false })
-  isFavorite: boolean
+  isFavorite?: boolean
 
   @Prop({ type: Date, default: Date.now })
-  createdAt: Date
+  createdAt?: Date
 
   @Prop({ type: Date })
-  updatedAt: Date
+  updatedAt?: Date
 }
 
 export const CartSchema = SchemaFactory.createForClass(Cart)
