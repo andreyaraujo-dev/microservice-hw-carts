@@ -33,7 +33,7 @@ export class CartService {
 
       return this.cartCustomRepository.create(dataForSave)
     } catch (error) {
-      console.log(error)
+      console.log('ERROR ON CREATE CART: ', error)
       throw new BadRequestException(error)
     }
   }
