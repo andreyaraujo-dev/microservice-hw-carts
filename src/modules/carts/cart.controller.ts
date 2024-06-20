@@ -32,7 +32,7 @@ export class CartController {
 
   @Post()
   @UseInterceptors(FileInterceptor('image'))
-  @UseGuards(JwtAuthGuard)
+  // @UseGuards(JwtAuthGuard)
   async create(
     @Body() cart: CartRequestDto,
     @UploadedFile() image: Express.Multer.File

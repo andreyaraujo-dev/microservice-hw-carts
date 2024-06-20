@@ -28,11 +28,12 @@ export class CartService {
     try {
       if (cart.image) {
         const response = await this.awsS3Service.uploadFile(cart.image)
-        dataForSave.imageUrl = response.Location
+        dataForSave.imageUrl = response.fileUrl
       }
 
       return this.cartCustomRepository.create(dataForSave)
     } catch (error) {
+      console.log(error)
       throw new BadRequestException(error)
     }
   }

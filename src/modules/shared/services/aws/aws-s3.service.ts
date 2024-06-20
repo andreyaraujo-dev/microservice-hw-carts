@@ -1,6 +1,6 @@
 import { Inject, Injectable } from '@nestjs/common'
 import { ConstantKeys } from '../../config/constant-keys.enum'
-import * as AWS from 'aws-sdk'
+import { PutObjectCommand, S3Client } from '@aws-sdk/client-s3'
 
 @Injectable()
 export class AwsS3Service {
@@ -13,43 +13,50 @@ export class AwsS3Service {
 
   async uploadFile(file: Express.Multer.File) {
     const { originalname } = file
-
-    return await this.s3_upload(
+    const uploadResponse = await this.s3Upload(
       file.buffer,
       this.s3Bucket,
       originalname,
       file.mimetype
     )
+
+    const fileUrl = await this.getFileURL(originalname)
+    return {
+      ...uploadResponse,
+      fileUrl
+    }
   }
 
-  private async s3_upload(
+  private async s3Upload(
     file: Buffer,
     bucket: string,
     originalName: string,
     mimetype: string
   ) {
-    const params = {
+    const objectCommand = new PutObjectCommand({
       Bucket: bucket,
       Key: String(originalName),
       Body: file,
       ACL: 'public-read',
       ContentType: mimetype,
-      ContentDisposition: 'inline',
-      CreateBucketConfiguration: {
-        LocationConstraint: 'ap-south-1'
-      }
-    }
+      ContentDisposition: 'inline'
+    })
 
     try {
-      const awsS3 = new AWS.S3({
+      const awsS3 = new S3Client({
         credentials: {
           accessKeyId: this.accessKeyId,
           secretAccessKey: this.secretAccessKey
-        }
+        },
+        region: 'us-east-2'
       })
-      return awsS3.upload(params).promise()
+      return awsS3.send(objectCommand)
     } catch (e) {
       console.log(e)
     }
+  }
+
+  private async getFileURL(originalName: string) {
+    return `https://${this.s3Bucket}.s3.amazonaws.com/${originalName}`
   }
 }
