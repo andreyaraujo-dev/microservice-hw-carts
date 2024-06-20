@@ -7,11 +7,15 @@ import {
   Patch,
   Post,
   Query,
-  UseGuards
+  UploadedFile,
+  UseGuards,
+  UseInterceptors
 } from '@nestjs/common'
 import { CartService } from './cart.service'
 import { Cart } from './schemas/cart.schema'
 import { JwtAuthGuard } from '../auth/jwt-auth.guard'
+import { CartRequestDto } from './dtos/cart-request.dto'
+import { FileInterceptor } from '@nestjs/platform-express'
 
 @Controller('cart')
 export class CartController {
@@ -27,9 +31,13 @@ export class CartController {
   }
 
   @Post()
+  @UseInterceptors(FileInterceptor('image'))
   @UseGuards(JwtAuthGuard)
-  async create(@Body() cart: Cart) {
-    return this.cartService.create(cart)
+  async create(
+    @Body() cart: CartRequestDto,
+    @UploadedFile() image: Express.Multer.File
+  ) {
+    return this.cartService.create({ ...cart, image })
   }
 
   @Get(':id')
