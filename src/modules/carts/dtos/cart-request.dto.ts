@@ -3,7 +3,7 @@ export class CartRequestDto {
   comments?: string
   purchaseDate?: Date
   value?: number
-  image?: Buffer
+  image?: Express.Multer.File
   year?: number
   userEmail: string
   isFavorite?: boolean

@@ -30,7 +30,6 @@ export class CartService {
         const response = await this.awsS3Service.uploadFile(cart.image)
         dataForSave.imageUrl = response.fileUrl
       }
-
       return this.cartCustomRepository.create(dataForSave)
     } catch (error) {
       console.log('ERROR ON CREATE CART: ', error)

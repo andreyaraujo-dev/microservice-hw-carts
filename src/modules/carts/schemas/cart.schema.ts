@@ -8,13 +8,13 @@ export class Cart {
   @Prop({ required: true, type: String })
   model: string
 
-  @Prop({ type: String })
+  @Prop({ required: false, type: String })
   comments?: string
 
-  @Prop({ type: Date })
+  @Prop({ required: false, type: Date })
   purchaseDate?: Date
 
-  @Prop({ required: true, type: Number })
+  @Prop({ required: false, type: Number })
   value?: number
 
   @Prop({ type: String })
@@ -29,10 +29,10 @@ export class Cart {
   @Prop({ required: false, type: Boolean, default: false })
   isFavorite?: boolean
 
-  @Prop({ type: Date, default: Date.now })
+  @Prop({ required: false, type: Date, default: Date.now })
   createdAt?: Date
 
-  @Prop({ type: Date })
+  @Prop({ required: false, type: Date })
   updatedAt?: Date
 }
 

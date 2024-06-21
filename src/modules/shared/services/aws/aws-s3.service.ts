@@ -13,7 +13,6 @@ export class AwsS3Service {
 
   async uploadFile(file: Express.Multer.File) {
     const { originalname } = file
-    console.log('AWS SERVICE FILE -> ', file)
 
     const uploadResponse = await this.s3Upload(
       file.buffer,
@@ -23,7 +22,6 @@ export class AwsS3Service {
     )
 
     const fileUrl = await this.getFileURL(originalname)
-    console.log('AWS SERVICE FILE ULR -> ', fileUrl)
 
     return {
       ...uploadResponse,
