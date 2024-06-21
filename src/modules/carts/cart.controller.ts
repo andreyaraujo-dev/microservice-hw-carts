@@ -37,7 +37,7 @@ export class CartController {
     @Body() cart: CartRequestDto,
     @UploadedFile() image: Express.Multer.File
   ) {
-    return this.cartService.create({ ...cart, image: cart.image })
+    return this.cartService.create({ ...cart, image })
   }
 
   @Get(':id')
