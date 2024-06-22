@@ -1,10 +1,10 @@
-export class CartRequestDto {
-  model: string
+export class UpdateCartRequestDto {
+  model?: string
   comments?: string
   purchaseDate?: Date
   value?: number
   image?: Express.Multer.File
   year?: number
-  userEmail: string
+  userEmail?: string
   isFavorite?: boolean
 }
