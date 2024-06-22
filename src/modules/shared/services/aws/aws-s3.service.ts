@@ -1,6 +1,10 @@
 import { Inject, Injectable } from '@nestjs/common'
 import { ConstantKeys } from '../../config/constant-keys.enum'
-import { PutObjectCommand, S3Client } from '@aws-sdk/client-s3'
+import {
+  PutObjectCommand,
+  S3Client,
+  DeleteObjectCommand
+} from '@aws-sdk/client-s3'
 
 @Injectable()
 export class AwsS3Service {
@@ -26,6 +30,27 @@ export class AwsS3Service {
     return {
       ...uploadResponse,
       fileUrl
+    }
+  }
+
+  async removeImage(imageUrl: string): Promise<void> {
+    try {
+      const fileName = this.getImageName(imageUrl)
+      console.log(fileName)
+      const objectCommand = new DeleteObjectCommand({
+        Bucket: this.s3Bucket,
+        Key: String(fileName)
+      })
+      const awsS3 = new S3Client({
+        credentials: {
+          accessKeyId: this.accessKeyId,
+          secretAccessKey: this.secretAccessKey
+        },
+        region: 'us-east-2'
+      })
+      await awsS3.send(objectCommand)
+    } catch (e) {
+      console.log('ERROR ON REMOVE FILE: ', e)
     }
   }
 
@@ -60,5 +85,10 @@ export class AwsS3Service {
 
   private async getFileURL(originalName: string) {
     return `https://${this.s3Bucket}.s3.amazonaws.com/${originalName}`
+  }
+
+  private getImageName(url: string) {
+    const filePath = url.split('/').pop()
+    return filePath.split('.').slice(0, -1).join('.')
   }
 }

@@ -7,6 +7,7 @@ import { Cart } from './schemas/cart.schema'
 import { CartCustomRepository } from './cart.repository'
 import { CreateCart } from './interfaces/create-cart.interface'
 import { AwsS3Service } from '../shared/services/aws/aws-s3.service'
+import { UpdateCart } from './interfaces/update-cart.interface'
 
 @Injectable()
 export class CartService {
@@ -45,12 +46,23 @@ export class CartService {
     return cart
   }
 
-  async update(id: string, cart: Cart): Promise<Cart> {
+  async update(id: string, cart: UpdateCart): Promise<Cart> {
     const cartAlreadyExists = await this.cartCustomRepository.findById(id)
     if (!cartAlreadyExists) {
       throw new NotFoundException('Registro não encontrado, tente novamente.')
     }
-    return this.cartCustomRepository.update(id, cart)
+
+    const dataForSave: Cart = cartAlreadyExists
+
+    if (cart.image) {
+      if (cartAlreadyExists.imageUrl) {
+        await this.awsS3Service.removeImage(cartAlreadyExists.imageUrl)
+      }
+      const response = await this.awsS3Service.uploadFile(cart.image)
+      dataForSave.imageUrl = response.fileUrl
+    }
+
+    return this.cartCustomRepository.update(id, dataForSave)
   }
 
   async delete(id: string): Promise<any> {
