@@ -26,7 +26,7 @@ export class CartCustomRepository {
     return this.cartModel.findById(id).exec()
   }
 
-  async update(id: string, cart: Cart): Promise<Cart> {
+  async update(id: string, cart: Partial<Cart>): Promise<Cart> {
     return this.cartModel.findByIdAndUpdate(id, cart, { new: true }).exec()
   }
 
