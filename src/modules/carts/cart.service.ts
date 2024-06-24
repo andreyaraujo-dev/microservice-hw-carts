@@ -52,7 +52,8 @@ export class CartService {
       throw new NotFoundException('Registro não encontrado, tente novamente.')
     }
 
-    const dataForSave: Cart = cartAlreadyExists
+    const dataForSave = { ...cart, imageUrl: '' }
+    delete dataForSave.image
 
     if (cart.image) {
       if (cartAlreadyExists.imageUrl) {
@@ -61,7 +62,6 @@ export class CartService {
       const response = await this.awsS3Service.uploadFile(cart.image)
       dataForSave.imageUrl = response.fileUrl
     }
-
     return this.cartCustomRepository.update(id, dataForSave)
   }
 
