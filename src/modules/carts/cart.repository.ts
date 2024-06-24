@@ -10,7 +10,10 @@ export class CartCustomRepository {
   async findAll(userEmail?: string, model?: string): Promise<Cart[]> {
     const query = this.cartModel.find()
     if (userEmail) query.where('userEmail', userEmail)
-    if (model) query.where('model', model)
+    if (model) {
+      const regex = new RegExp(`^${model}|${model}$`, 'i')
+      query.where('model', model).regex(regex)
+    }
     return query.exec()
   }
 
