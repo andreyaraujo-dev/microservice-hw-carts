@@ -22,7 +22,7 @@ export class CartController {
   constructor(private readonly cartService: CartService) {}
 
   @Get()
-  // @UseGuards(JwtAuthGuard)
+  @UseGuards(JwtAuthGuard)
   async findAll(
     @Query('userEmail') userEmail?: string,
     @Query('model') model?: string
