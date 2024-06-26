@@ -70,10 +70,20 @@ export class CartService {
     if (!cart) {
       throw new NotFoundException('Registro não encontrado, tente novamente.')
     }
+    await this.awsS3Service.removeImage(cart.imageUrl)
     return this.cartCustomRepository.delete(id)
   }
 
   async deleteMany(ids: string[]): Promise<any> {
-    return this.cartCustomRepository.deleteMany(ids)
+    try {
+      const carts = await this.cartCustomRepository.findByIds(ids)
+      for (const cart of carts) {
+        await this.awsS3Service.removeImage(cart.imageUrl)
+      }
+
+      return this.cartCustomRepository.deleteMany(ids)
+    } catch (error) {
+      throw new BadRequestException(error)
+    }
   }
 }
