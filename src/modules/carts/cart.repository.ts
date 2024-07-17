@@ -41,4 +41,10 @@ export class CartCustomRepository {
   async findByIds(ids: string[]): Promise<Cart[]> {
     return this.cartModel.find({ _id: { $in: ids } }).exec()
   }
+
+  async favoriteById(id: string): Promise<Cart> {
+    return this.cartModel
+      .findByIdAndUpdate(id, { isFavorite: true }, { new: true })
+      .exec()
+  }
 }

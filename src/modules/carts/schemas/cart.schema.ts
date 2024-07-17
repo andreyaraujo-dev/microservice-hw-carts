@@ -11,6 +11,9 @@ export class Cart {
   @Prop({ required: false, type: String })
   comments?: string
 
+  @Prop({ required: false, type: String })
+  collection?: string
+
   @Prop({ required: false, type: Date })
   purchaseDate?: Date
 

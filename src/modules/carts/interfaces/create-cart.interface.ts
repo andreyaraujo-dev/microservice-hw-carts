@@ -1,5 +1,6 @@
 export interface CreateCart {
   model: string
+  collection: string
   comments?: string
   purchaseDate?: Date
   value?: number

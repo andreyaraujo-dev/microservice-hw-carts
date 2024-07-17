@@ -46,6 +46,14 @@ export class CartService {
     return cart
   }
 
+  async favorite(id: string): Promise<Cart> {
+    const cart = await this.cartCustomRepository.findById(id)
+    if (!cart) {
+      throw new NotFoundException('Registro não encontrado, tente novamente.')
+    }
+    return this.cartCustomRepository.favoriteById(id)
+  }
+
   async update(id: string, cart: UpdateCart): Promise<Cart> {
     const cartAlreadyExists = await this.cartCustomRepository.findById(id)
     if (!cartAlreadyExists) {

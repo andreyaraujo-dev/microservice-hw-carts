@@ -68,4 +68,10 @@ export class CartController {
   async deleteMany(@Body('ids') ids: string[]) {
     return this.cartService.deleteMany(ids)
   }
+
+  @Patch(':id/favorite')
+  @UseGuards(JwtAuthGuard)
+  async favoriteCart(@Param('id') id: string) {
+    return this.cartService.favorite(id)
+  }
 }
