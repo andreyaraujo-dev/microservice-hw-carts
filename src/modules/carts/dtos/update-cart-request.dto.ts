@@ -1,6 +1,6 @@
 export class UpdateCartRequestDto {
   model?: string
-  collection: string
+  collection?: string
   comments?: string
   purchaseDate?: Date
   value?: number

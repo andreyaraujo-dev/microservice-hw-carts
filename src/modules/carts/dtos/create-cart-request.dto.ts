@@ -1,6 +1,6 @@
 export class CreateCartRequestDto {
   model: string
-  collection: string
+  collection?: string
   comments?: string
   purchaseDate?: Date
   value?: number

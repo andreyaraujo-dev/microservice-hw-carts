@@ -1,6 +1,6 @@
 export interface UpdateCart {
   model?: string
-  collection: string
+  collection?: string
   comments?: string
   purchaseDate?: Date
   value?: number
