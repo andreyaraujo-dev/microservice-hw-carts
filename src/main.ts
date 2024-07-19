@@ -3,6 +3,7 @@ import { AppModule } from './app.module'
 import { MongoExceptionFilter } from './modules/shared/filters/mongoose.filter'
 import { LoggerService } from './modules/shared/services/logger/logger'
 import { ValidationPipe } from '@nestjs/common'
+import { HttpExceptionFilter } from './modules/shared/filters/http-exception.filter'
 
 async function bootstrap() {
   const PORT = process.env.PORT || 3000
@@ -14,6 +15,7 @@ async function bootstrap() {
   const loggerService = new LoggerService()
   loggerService.setContext('Server')
   app.useLogger(loggerService)
+  app.useGlobalFilters(new HttpExceptionFilter(loggerService))
 
   await app.listen(PORT, () => {
     loggerService.log(`🚀 Listen on ${PUBLIC_URL}:${PORT}`)
