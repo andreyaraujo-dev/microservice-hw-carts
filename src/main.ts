@@ -2,6 +2,7 @@ import { NestFactory } from '@nestjs/core'
 import { AppModule } from './app.module'
 import { MongoExceptionFilter } from './modules/shared/filters/mongoose.filter'
 import { LoggerService } from './modules/shared/services/logger/logger'
+import { ValidationPipe } from '@nestjs/common'
 
 async function bootstrap() {
   const PORT = process.env.PORT || 3000
@@ -9,6 +10,7 @@ async function bootstrap() {
 
   const app = await NestFactory.create(AppModule, { cors: true })
   app.useGlobalFilters(new MongoExceptionFilter())
+  app.useGlobalPipes(new ValidationPipe())
   const loggerService = new LoggerService()
   loggerService.setContext('Server')
   app.useLogger(loggerService)
