@@ -1,9 +1,10 @@
+import { Type } from 'class-transformer'
 import {
-  IsBooleanString,
+  IsBoolean,
   IsDateString,
   IsEmail,
   IsNotEmpty,
-  IsNumberString,
+  IsNumber,
   IsOptional,
   IsString
 } from 'class-validator'
@@ -25,14 +26,16 @@ export class CreateCartRequestDto {
   @IsOptional()
   purchaseDate?: Date
 
-  @IsNumberString()
+  @Type(() => Number)
+  @IsNumber()
   @IsOptional()
   value?: number
 
   @IsOptional()
   image?: Express.Multer.File
 
-  @IsNumberString()
+  @Type(() => Number)
+  @IsNumber()
   @IsOptional()
   year?: number
 
@@ -40,7 +43,8 @@ export class CreateCartRequestDto {
   @IsEmail()
   userEmail: string
 
-  @IsBooleanString()
+  @Type(() => Boolean)
+  @IsBoolean()
   @IsOptional()
   isFavorite?: boolean
 }
