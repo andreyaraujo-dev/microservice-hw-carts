@@ -1,73 +1,79 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="200" alt="Nest Logo" /></a>
-</p>
+# Microservice HW Carts
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+API REST para cadastro e gerenciamento de carrinhos, construída com NestJS, MongoDB e armazenamento opcional de imagens no Amazon S3.
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://coveralls.io/github/nestjs/nest?branch=master" target="_blank"><img src="https://coveralls.io/repos/github/nestjs/nest/badge.svg?branch=master#9" alt="Coverage" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+![Status](https://img.shields.io/badge/status-em%20desenvolvimento-yellow)
+![Node.js](https://img.shields.io/badge/Node.js-20%2B-339933?logo=node.js)
+![NestJS](https://img.shields.io/badge/NestJS-10-E0234E?logo=nestjs)
 
-## Description
+## Visão geral
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+O serviço centraliza carrinhos associados a usuários e oferece operações autenticadas para listar, consultar, criar, editar, favoritar e excluir registros. Imagens podem ser enviadas como `multipart/form-data` e armazenadas no S3.
 
-## Installation
+## Stack
+
+- Node.js e TypeScript
+- NestJS
+- MongoDB com Mongoose
+- JWT e Passport para autenticação
+- AWS S3 para imagens
+- Jest para testes
+
+## Configuração local
+
+Pré-requisitos: Node.js 20+, MongoDB acessível e, para imagens, um bucket S3 configurado.
 
 ```bash
-$ npm install
+npm install
+cp .env.example .env
 ```
 
-## Running the app
+Preencha no `.env` pelo menos `MONGO_URL`, `PORT`, `PUBLIC_URL`, `NODE_ENV` e `JWT_SECRET`. As credenciais e o bucket AWS são necessários para os fluxos de imagem.
+
+## Executando
 
 ```bash
-# development
-$ npm run start
-
-# watch mode
-$ npm run start:dev
-
-# production mode
-$ npm run start:prod
+npm run start:dev
 ```
 
-## Test
+Outros comandos:
 
 ```bash
-# unit tests
-$ npm run test
-
-# e2e tests
-$ npm run test:e2e
-
-# test coverage
-$ npm run test:cov
+npm run build
+npm run start:prod
+npm test
+npm run test:e2e
 ```
 
-## Support
+Por padrão, a API expõe a rota de saúde em `GET /` e os recursos de carrinho sob `/cart`. As rotas de carrinho exigem autenticação JWT.
 
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
+## Endpoints principais
 
-## Stay in touch
+| Método | Rota | Finalidade |
+| --- | --- | --- |
+| `GET` | `/cart` | Lista carrinhos, com filtros opcionais |
+| `POST` | `/cart` | Cria carrinho e pode receber imagem |
+| `GET` | `/cart/:id` | Consulta um carrinho |
+| `PATCH` | `/cart/:id` | Atualiza um carrinho |
+| `DELETE` | `/cart/:id` | Exclui um carrinho |
+| `POST` | `/cart/delete-many` | Exclui vários carrinhos |
+| `PATCH` | `/cart/:id/favorite` | Alterna o favorito |
 
-- Author - [Kamil Myśliwiec](https://kamilmysliwiec.com)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
+Veja o fluxo completo de configuração e exemplos em [`docs/USAGE.md`](docs/USAGE.md).
 
-## License
+## Estrutura
 
-Nest is [MIT licensed](LICENSE).
+```text
+src/
+├── modules/auth       # estratégia e guarda JWT
+├── modules/carts      # controller, serviço, repositório e schema
+└── modules/shared     # configuração, filtros, logger e S3
+```
+
+## Screenshots
+
+Adicione os prints do frontend relacionado a este serviço em [`assets/screenshots/`](assets/screenshots/). Para exibir uma imagem, use este modelo:
+
+```md
+<!-- ![Descrição da tela](assets/screenshots/nome-do-arquivo.png) -->
+```
